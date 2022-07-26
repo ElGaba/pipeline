@@ -81,7 +81,7 @@ Cypress.Commands.add('refreshRoutes', () => {
             })
             .its('body', { log: false })
             .then((routes) => {
-                cy.writeFile('cypress/support/routes.json', routes, {
+                cy.writeFile('tests/cypress/support/routes.json', routes, {
                     log: false,
                 });
 

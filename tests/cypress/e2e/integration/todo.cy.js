@@ -25,4 +25,13 @@ describe('Todo list interactions', () => {
         cy.get('.todo-list li').first().contains('Pay electric bills')
         cy.get('.todo-list li').last().contains('Walk the dog')
       })
+
+      it('can add new todo items', () => {
+        cy.visit('/dashboard');
+
+        const newItem = 'Feed the cat';
+        cy.get('#add-todo').type(newItem);
+        cy.contains('Add').click();
+        cy.get('.todo-list li').should('have.length', 1).contains(newItem);
+      })
 });

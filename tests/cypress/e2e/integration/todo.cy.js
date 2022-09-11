@@ -30,8 +30,11 @@ describe('Todo list interactions', () => {
         cy.visit('/dashboard');
 
         const newItem = 'Feed the cat';
+        const secondItem = 'Task added with enter key'
         cy.get('#add-todo').type(newItem);
         cy.contains('Add').click();
         cy.get('.todo-list li').should('have.length', 1).contains(newItem);
+        cy.get('#add-todo').type(`${secondItem}{enter}`);
+        cy.get('.todo-list li').should('have.length', 2).contains(secondItem);
       })
 });

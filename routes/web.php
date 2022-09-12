@@ -23,7 +23,11 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::delete('/todo/{todo}', [TodoController::class, 'destroy']);
+
     Route::post('/todo', [TodoController::class, 'store']);
+
+    Route::post('/todo/toggle-complete/{todo}', [TodoController::class, 'toggleComplete']);
 });
 
 require __DIR__.'/auth.php';

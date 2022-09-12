@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'name' => ['required', 'string', 'max:255']
         ]);
@@ -16,6 +17,20 @@ class TodoController extends Controller
             'name' => $request->name,
             'user_id' => auth()->user()->id
         ]);
+        return redirect('dashboard');
+    }
+
+    public function toggleComplete(Todo $todo)
+    {
+        $todo->complete = !$todo->complete;
+        $todo->save();
+        return redirect('dashboard');
+    }
+
+    public function destroy(Todo $todo)
+    {
+        $todo->delete();
+
         return redirect('dashboard');
     }
 }

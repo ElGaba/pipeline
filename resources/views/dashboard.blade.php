@@ -20,20 +20,25 @@
                 <ul class="todo-list">
                     @foreach(auth()->user()->todos as $todo)
                     <li class="flex mb-4 items-center">
-                        <label class="w-full text-gray-900">{{ $todo->name }}</label>
-                        @if($todo->complete)
-                        <button class="flex shrink-0 p-2 ml-4 mr-2 border-2 rounded hover:text-white text-gray-500 border-gray-500 hover:bg-gray-500">Not Done</button>
+                        <label class="w-full text-gray-900 {{ $todo->complete ? 'line-through': ''; }}">{{ $todo->name }}</label>
+                        @if(!$todo->complete)
+                        <form action="/todo/toggle-complete/{{$todo->id}}" method="POST" class="flex shrink-0 p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green-500 border-green-500 hover:bg-green-500">
+                            @csrf
+                            <button id="complete-button" type="submit">Done</button>
+                        </form>
                         @else
-                        <button class="flex shrink-0 p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green-500 border-green-500 hover:bg-green-500">Done</button>
+                        <form action="/todo/toggle-complete/{{$todo->id}}" method="POST" class="flex shrink-0 p-2 ml-4 mr-2 border-2 rounded hover:text-white text-gray-500 border-gray-500 hover:bg-gray-500">
+                            @csrf
+                            <button id="incomplete-button">Not Done</button>
+                        </form>
                         @endif
-                        <button class="flex shrink-0 p-2 ml-2 border-2 rounded text-red-500 border-red-500 hover:text-white hover:bg-red-500">Remove</button>
+                        <form action="/todo/{{ $todo->id }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button id="remove-button" type="submit" class="flex shrink-0 p-2 ml-2 border-2 rounded text-red-500 border-red-500 hover:text-white hover:bg-red-500">Remove</button>
+                        </form>
                     </li>
                     @endforeach
-                    <!-- <li class="flex mb-4 items-center">
-                        <p class="w-full line-through text-green-500">Walk the dog</p>
-                        <button class="flex shrink-0 p-2 ml-4 mr-2 border-2 rounded hover:text-white text-gray-500 border-gray-500 hover:bg-gray-500">Not Done</button>
-                        <button class="flex shrink-0 p-2 ml-2 border-2 rounded text-red-500 border-red-500 hover:text-white hover:bg-red-500">Remove</button>
-                    </li> -->
                 </ul>
             </div>
         </div>

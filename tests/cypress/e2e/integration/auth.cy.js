@@ -29,4 +29,9 @@ describe('Authentication', () => {
 
         cy.visit('/dashboard').contains('JohnDoe');
     });
+
+    it('visits the login', () => {
+        cy.visit('/').contains('Log in');
+        cy.visit('/').contains("Don't have an account?");
+    });
 });

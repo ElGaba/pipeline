@@ -19,7 +19,7 @@
                 </div>
                 <ul class="todo-list">
                     @foreach(auth()->user()->todos as $todo)
-                    <li class="flex mb-4 items-center">
+                    <li class="flex mb-4 items-center border-b border-t border-gray-100">
                         <label class="w-full text-gray-900 {{ $todo->complete ? 'line-through': ''; }}">{{ $todo->name }}</label>
                         @if(!$todo->complete)
                         <form action="/todo/toggle-complete/{{$todo->id}}" method="POST" class="flex shrink-0 p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green-500 border-green-500 hover:bg-green-500">

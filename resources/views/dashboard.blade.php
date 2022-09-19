@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="h-100 w-full flex items-center justify-center font-sans">
-            <div class="bg-white rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg">
+            <div class="bg-white rounded shadow p-6 m-4 w-full lg:w-3/4">
                 <div class="mb-4">
                     <h1 class="text-gray-900">Todo List</h1>
                     <form x-data="todoForm" id="todo-form" class="flex mt-4" action="/todo" method="POST">

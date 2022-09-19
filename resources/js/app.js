@@ -2,15 +2,16 @@ require('./bootstrap');
 
 import Alpine from 'alpinejs';
 
-    document.getElementById("todo-name").addEventListener('keydown', function(event) {
-        if (event.keyCode === 13) {
-            document.getElementById('todo-add').click();
-        }
-    });
-
 window.Alpine = Alpine;
 
 Alpine.data('todoForm', () => ({
+
+    enterKey(){
+        if (event.keyCode === 13) {
+            document.getElementById('todo-add').click();
+        }
+    },
+
     callCreateCategoryOrTodo(){
         let form = document.getElementById('todo-form');
          if(document.getElementById('todo-category').value == 0)

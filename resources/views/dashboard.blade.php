@@ -12,7 +12,7 @@
                     <h1 class="text-gray-900">Todo List</h1>
                     <form x-data="todoForm" id="todo-form" class="flex mt-4" action="/todo" method="POST">
                         @csrf
-                        <input name="name" id="todo-name" class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-gray-700" placeholder="Todo name" autofocus>
+                        <input name="name" id="todo-name" x-on:keydown="enterKey" class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-gray-700" placeholder="Todo name" autofocus>
                         <select name="category_id" id="todo-category" class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-gray-700" placeholder="Category">
                             <option value="0">Add category</option>
                             @foreach(auth()->user()->categories as $category)

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/todo', [TodoController::class, 'store']);
 
     Route::post('/todo/toggle-complete/{todo}', [TodoController::class, 'toggleComplete']);
+
+    Route::post('/category', [CategoryController::class, 'store']);
 });
 
 require __DIR__.'/auth.php';

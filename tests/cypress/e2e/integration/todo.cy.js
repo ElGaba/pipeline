@@ -13,29 +13,27 @@ describe('Todo list interactions', () => {
         cy.create('App\\Models\\Todo', {name: 'Pay electric bills', user_id: 1});
         cy.create('App\\Models\\Todo', {name: 'Walk the dog', user_id: 1});
         cy.visit('/dashboard');
-        // We use the `cy.get()` command to get all elements that match the selector.
-        // Then, we use `should` to assert that there are two matched items,
-        // which are the two default items.
+
         cy.get('.todo-list li').should('have.length', 2);
-    
-        // We can go even further and check that the default todos each contain
-        // the correct text. We use the `first` and `last` functions
-        // to get just the first and last matched elements individually,
-        // and then perform an assertion with `should`.
         cy.get('.todo-list li').first().contains('Pay electric bills');
         cy.get('.todo-list li').last().contains('Walk the dog');
       })
 
       it('can add new todo items', () => {
+        cy.create('App\\Models\\Category', {name: 'Personal', user_id: 1});
         cy.visit('/dashboard');
 
         const newItem = 'Feed the cat';
         const secondItem = 'Task added with enter key'
-        cy.get('#add-todo').type(newItem);
-        cy.contains('Add').click();
+        cy.get('#todo-name').type(newItem);
+        cy.get('#todo-category').select('Personal');
+        cy.get('#todo-add').click();
         cy.get('.todo-list li').should('have.length', 1).contains(newItem);
-        cy.get('#add-todo').type(`${secondItem}{enter}`);
+        //pending: remove line below, add logic to keep the selected category saved with query params
+        cy.get('#todo-category').select('Personal');
+        cy.get('#todo-name').type(`${secondItem}{enter}`);
         cy.get('.todo-list li').should('have.length', 2).contains(secondItem);
+        cy.get('.todo-list li').contains('Personal')
       })
 
       it('can check off an item as completed', () => {
@@ -70,7 +68,25 @@ describe('Todo list interactions', () => {
         cy.contains('Pay electric bills').should('not.exist');
       });
 
+      it('can create a category', () => {
+        cy.visit('/dashboard');
+
+        cy.get('#todo-category').should('have.value', 0);
+
+        const categoryName = 'New category';
+        cy.get('#todo-name').type(`${categoryName}{enter}`);
+        cy.get('.todo-list').should('not.exist');
+        cy.get('#todo-category').select(categoryName).should('have.value', 1);
+
+        cy.get('#todo-category').select('Add category');
+        const secondCategory = 'Another category';
+        cy.get('#todo-name').type(secondCategory);
+        cy.get('#todo-add').click();
+        cy.get('.todo-list').should('not.exist');
+        cy.get('#todo-category').select(secondCategory).should('have.value', 2);
+      });
+
       function getTodoParent(){
-        return cy.contains('Pay electric bills').parent() ;
+        return cy.contains('Pay electric bills').parent().parent();
       }
 });

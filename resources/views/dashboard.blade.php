@@ -16,16 +16,22 @@
                         <select name="category_id" id="todo-category" class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-gray-700" placeholder="Category">
                             <option value="0">Add category</option>
                             @foreach(auth()->user()->categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}"
+                            @click="if(document.getElementById('todo-name').value == ''){
+                                const urlParams = new URLSearchParams(window.location.search);
+                                urlParams.set('category', '{{ ($category->name) }}');
+                                window.location.search = urlParams
+                            };"
+                            >{{ $category->name }}</option>
                             @endforeach
                         </select>
                         <button type="button" id="todo-add" @click="callCreateCategoryOrTodo" class="flex shrink-0 p-2 border-2 rounded text-blue-500 border-blue-500 hover:text-white hover:bg-blue-500" >Add</button>
                     </form>
 
-                @if(auth()->user()->todos->isNotEmpty())
+                @if($todos->isNotEmpty())
                 </div>
                 <ul class="todo-list">
-                    @foreach(auth()->user()->todos as $todo)
+                    @foreach($todos as $todo)
                     <li class="flex mb-4 items-center border-b border-t border-gray-100">
                         <div class="w-full flex items-center">
                         <label class="text-gray-900 {{ $todo->complete ? 'line-through': ''; }}">{{ $todo->name }}</label>

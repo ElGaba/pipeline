@@ -9,7 +9,7 @@ describe('Todo list interactions', () => {
         cy.contains('h2', 'Todos');
     });
 
-    it('displays two todo items by default', () => {
+    it('displays all todo items by default', () => {
         cy.create('App\\Models\\Todo', {name: 'Pay electric bills', user_id: 1});
         cy.create('App\\Models\\Todo', {name: 'Walk the dog', user_id: 1});
         cy.visit('/dashboard');
@@ -17,7 +17,31 @@ describe('Todo list interactions', () => {
         cy.get('.todo-list li').should('have.length', 2);
         cy.get('.todo-list li').first().contains('Pay electric bills');
         cy.get('.todo-list li').last().contains('Walk the dog');
+      });
+
+      it('filters todo items by category', () => {
+        cy.create('App\\Models\\Category', {name: 'Personal', user_id: 1});
+        cy.create('App\\Models\\Category', {name: 'Work', user_id: 1});
+        cy.create('App\\Models\\Todo', {name: 'Pay electric bills', user_id: 1, category_id: 1});
+        cy.create('App\\Models\\Todo', {name: 'Walk the dog', user_id: 1, category_id: 2});
+        cy.visit('/dashboard');
+
+        cy.get('.todo-list li').should('have.length', 2);
+        cy.get('.todo-list li').first().contains('Pay electric bills');
+        cy.get('.todo-list li').last().contains('Walk the dog');
+        cy.get('#todo-category').select('Personal');
+        cy.get('#todo-add').click();
+        cy.url().should('contain', 'Personal');
+        cy.get('.todo-list li').should('have.length', 1);
+        cy.get('.todo-list li').first().contains('Pay electric bills');
+
+        cy.get('#todo-category').select('Work');
+        cy.get('#todo-add').click();
+        cy.url().should('contain', 'Work');
+        cy.get('.todo-list li').should('have.length', 1);
+        cy.get('.todo-list li').first().contains('Walk the dog');
       })
+
 
       it('can add new todo items', () => {
         cy.create('App\\Models\\Category', {name: 'Personal', user_id: 1});
@@ -29,9 +53,10 @@ describe('Todo list interactions', () => {
         cy.get('#todo-category').select('Personal');
         cy.get('#todo-add').click();
         cy.get('.todo-list li').should('have.length', 1).contains(newItem);
+        cy.get('#todo-name').type(secondItem);
         //pending: remove line below, add logic to keep the selected category saved with query params
         cy.get('#todo-category').select('Personal');
-        cy.get('#todo-name').type(`${secondItem}{enter}`);
+        cy.get('#todo-name').type(`{enter}`);
         cy.get('.todo-list li').should('have.length', 2).contains(secondItem);
         cy.get('.todo-list li').contains('Personal')
       })

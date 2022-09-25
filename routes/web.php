@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TodoController;
+use App\Models\Category;
+use App\Models\Todo;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +23,20 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        if(old('category_id')){
+            ddd(old());
+        }
+        $todos = Todo::where('user_id', auth()->user()->id);
+
+        if(request('category')){
+            $categoryId = Category::where('user_id', auth()->user()->id)
+                ->where('name', request('category'))->get()->first()->id;
+
+            $todos->where('category_id', $categoryId);
+        }
+        return view('dashboard', [
+            'todos' => $todos->get()
+        ]);
     })->name('dashboard');
 
     Route::delete('/todo/{todo}', [TodoController::class, 'destroy']);

@@ -20,6 +20,24 @@ Alpine.data('todoForm', () => ({
         } else {
             form.action = '/todo'; form.submit()
         }
+    },
+
+    setQueryParams(){
+        let urlParams = new URLSearchParams(window.location.search);
+        if(document.getElementById('todo-name').value != ''){
+            urlParams.set('name', document.getElementById('todo-name').value);
+        };
+        let selectedIndex = document.getElementById('todo-category').selectedIndex;
+        if(selectedIndex > 0){
+            urlParams.set('category', document.getElementById('todo-category').options[selectedIndex].text);
+            urlParams.set('selectedIndex', selectedIndex);
+        }
+        else{
+            urlParams.delete('name');
+            urlParams.delete('category');
+            urlParams.delete('selectedIndex');
+        };
+        window.location.search = urlParams;
     }
 }));
 

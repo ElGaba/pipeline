@@ -23,12 +23,9 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
-        if(old('category_id')){
-            ddd(old());
-        }
         $todos = Todo::where('user_id', auth()->user()->id);
 
-        if(request('category')){
+        if (request('category')) {
             $categoryId = Category::where('user_id', auth()->user()->id)
                 ->where('name', request('category'))->get()->first()->id;
 

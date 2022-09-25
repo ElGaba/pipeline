@@ -12,17 +12,11 @@
                     <h1 class="text-gray-900">Todo List</h1>
                     <form x-data="todoForm" id="todo-form" class="flex mt-4" action="/todo" method="POST">
                         @csrf
-                        <input name="name" id="todo-name" x-on:keydown="enterKey" class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-gray-700" placeholder="Todo name" autofocus>
-                        <select name="category_id" id="todo-category" class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-gray-700" placeholder="Category">
+                        <input name="name" id="todo-name" x-on:keydown="enterKey" class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-gray-700" placeholder="Todo name" value="{{ request('name') }}" autofocus>
+                        <select name="category_id" id="todo-category" x-on:change="setQueryParams" class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-gray-700" placeholder="Category">
                             <option value="0">Add category</option>
                             @foreach(auth()->user()->categories as $category)
-                            <option value="{{ $category->id }}"
-                            @click="if(document.getElementById('todo-name').value == ''){
-                                const urlParams = new URLSearchParams(window.location.search);
-                                urlParams.set('category', '{{ ($category->name) }}');
-                                window.location.search = urlParams
-                            };"
-                            >{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" {{ request()->has('selectedIndex') ? ($loop->index == request('selectedIndex')-1 ?  'selected' : '') : '' }}>{{ $category->name }}</option>
                             @endforeach
                         </select>
                         <button type="button" id="todo-add" @click="callCreateCategoryOrTodo" class="flex shrink-0 p-2 border-2 rounded text-blue-500 border-blue-500 hover:text-white hover:bg-blue-500" >Add</button>

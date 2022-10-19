@@ -33,14 +33,14 @@
                         </div>
                         
                         @if(!$todo->complete)
-                        <form action="/todo/toggle-complete/{{$todo->id}}" method="POST" class="flex shrink-0 p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green-500 border-green-500 hover:bg-green-500">
+                        <form id="complete-button" onclick="event.target.submit()" action="/todo/toggle-complete/{{$todo->id}}" method="POST" class="flex shrink-0">
                             @csrf
-                            <button id="complete-button" type="submit">Done</button>
+                            <button type="submit" class="p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green-500 border-green-500 hover:bg-green-500">Done</button>
                         </form>
                         @else
-                        <form action="/todo/toggle-complete/{{$todo->id}}" method="POST" class="flex shrink-0 p-2 ml-4 mr-2 border-2 rounded hover:text-white text-gray-500 border-gray-500 hover:bg-gray-500">
+                        <form id="incomplete-button" onclick="event.target.submit()" action="/todo/toggle-complete/{{$todo->id}}" method="POST" class="flex shrink-0">
                             @csrf
-                            <button id="incomplete-button">Not Done</button>
+                            <button class="p-2 ml-4 mr-2 border-2 rounded hover:text-white text-gray-500 border-gray-500 hover:bg-gray-500">Not Done</button>
                         </form>
                         @endif
                         <form action="/todo/{{ $todo->id }}" method="POST">

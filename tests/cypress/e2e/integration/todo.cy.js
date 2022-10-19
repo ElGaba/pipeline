@@ -51,7 +51,7 @@ describe('Todo list interactions', () => {
         const secondItem = 'Task added with enter key'
         cy.get('#todo-name').type(newItem);
         cy.get('#todo-category').select('Personal');
-        cy.get('#todo-add').click();
+        cy.get('#todo-add').click('topLeft', {force: true});
         cy.get('.todo-list li').should('have.length', 1).contains(newItem);
         cy.get('#todo-name').type(secondItem);
         //pending: remove line below, add logic to keep the selected category saved with query params
@@ -66,16 +66,16 @@ describe('Todo list interactions', () => {
         cy.visit('/dashboard');
 
         getTodoParent()
-          .find('button[id=complete-button]')
-          .click();
+          .find('form[id=complete-button]')
+          .click('topLeft', {force: true});
 
         getTodoParent()
           .find('label')
           .should('have.class', 'line-through');
 
         getTodoParent()
-          .find('button[id=incomplete-button]')
-          .click();
+          .find('form[id=incomplete-button]')
+          .click('topLeft', {force: true});
 
         getTodoParent()
           .find('label')
